@@ -8,4 +8,4 @@ weather icons are created by SVG and CSS
 2.写入svg到指定文件【或者数据库】  
 3.写入css到指定文件  
 4.svg元素写入对应class  
-5.页面引用svg  
+5.页面读取svg并写入  
