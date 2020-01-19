@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>天气图标动画 svg + css</title>
+    <meta name="author" content="newcookie" />
+    <meta name="keywords" content="天气图标,天气图标动画" />
+    <meta name="description" content="多种常用天气图标动画。" />
+
+    <link rel="stylesheet" type="text/css" href="js/config/WeatherIcon.css" />
+    <style type="text/css"></style>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        font-size: 14px;
+        font-family: "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: #000;
+        color: #fff;
+        overflow: hidden;
+        overflow-y: auto;
+      }
+
+      .wrap {
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin-bottom: 50px;
+        padding: 10px;
+        overflow: hidden;
+      }
+      .weathericonDiv > * {
+        position: relative;
+        height: 100px;
+        line-height: 60px;
+        width: 60px;
+        margin: 10px;
+        float: left;
+        text-align: center;
+      }
+      .weathericonDiv > div > svg + div {
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap weathericonDiv" id="weathericonDiv0"></div>
+    <div class="wrap weathericonDiv" id="weathericonDiv1"></div>
+
+    <script
+      type="text/javascript"
+      src="js/config/config.weathericon.js"
+    ></script>
+    <script type="text/javascript">
+      (function() {
+        //获取svg
+        //config.weathericon["day"][00]
+        //config.weathericon["night"][00]
+        //20200115 动态天气图标
+        if (config.weathericon && config.weathericon["load"]) {
+          var dayTypeArray = ["day", "night"];
+          dayTypeArray.forEach(function(type, index) {
+            var weathericonDiv = document.querySelector(
+              "#weathericonDiv" + index
+            );
+            var dayOrNight = type;
+
+            var weathericonTitleDiv = document.createElement("DIV");
+            weathericonTitleDiv.innerHTML = dayOrNight;
+            weathericonDiv.appendChild(weathericonTitleDiv);
+
+            var len = Object.keys(config.weathericonname[dayOrNight]).length;
+            for (var i = 0; i < len; i++) {
+              var weather_code = i < 10 ? "0" + i : i + "";
+              var iconname = config.weathericonname[dayOrNight][weather_code];
+              var iconsvg = config.weathericon[dayOrNight][weather_code];
+
+              if (iconsvg) {
+                //svg天气
+                var weathericon = document.createElement("DIV");
+                weathericon.title = iconname;
+                weathericonDiv.appendChild(weathericon);
+
+                var weathericonDes = document.createElement("DIV");
+                // weathericon.innerHTML = weather_code + " - " + iconname;
+                weathericonDes.innerHTML = weather_code;
+
+                weathericon.innerHTML = iconsvg + weathericonDes.outerHTML;
+              } else {
+                //还未有svg天气的直接显示对应的img
+                var weatherSrc =
+                  "img/weather-white/" +
+                  dayOrNight +
+                  "/" +
+                  weather_code +
+                  ".png";
+
+                //
+                var weathericon = document.createElement("DIV");
+                weathericon.title = iconname;
+                weathericonDiv.appendChild(weathericon);
+
+                var weathericonDes = document.createElement("DIV");
+                weathericon.innerHTML = weather_code;
+              }
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
